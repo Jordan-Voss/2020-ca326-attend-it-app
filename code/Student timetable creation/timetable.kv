@@ -1,0 +1,45 @@
+<ModuleGrid>
+    name: name
+    time: time
+    dur:dur
+    loc:loc
+    GridLayout:
+        cols:1
+        size: root.width -100, root.height -100
+
+        GridLayout:
+            cols:3
+            size:root.width-100,root.height -400
+            Label:
+                text: "Module Name: "
+
+            TextInput:
+                id: name
+                multiline:False
+            Label:
+            Label:
+                text:"Module Start Time: "
+            TextInput:
+                id:time
+                multiline:False
+            Label:
+            Label:
+                text:"Module Duration: "
+
+            TextInput:
+                id:dur
+                multiline:False
+            Label:
+
+            Label:
+                text:"Module Location: "
+
+            TextInput:
+                id:loc
+                multiline:False
+            Label:
+
+        Button:
+            text:"Add Module"
+            size_hint:.5,.5
+            on_press:root.pressed()
