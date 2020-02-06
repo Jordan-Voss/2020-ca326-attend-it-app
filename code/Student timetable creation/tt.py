@@ -41,7 +41,6 @@ class ModuleGrid(Widget):
         mod = Module(m_name,m_time,m_duration,m_location)
         print(mod.show())
 
-
 class TimetableApp(App):
     def build(self):
         return ModuleGrid()
