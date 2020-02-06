@@ -7,6 +7,7 @@ from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
 
+#module class to store module attributes
 class Module():
     def __init__(self,name,time,duration,location):
         self.name = name
@@ -15,11 +16,14 @@ class Module():
         self.loc = location
     def show(mod):
         return mod.name,mod.time,mod.dur,mod.loc
+
+#create kivy grid to place text boxes,buttons etc.
 class ModuleGrid(Widget):
     name = ObjectProperty(None)
     time = ObjectProperty(None)
     dur = ObjectProperty(None)
     loc = ObjectProperty(None)
+    #what to do when button pressed
     def pressed(self):
         m_name = self.name.text
         self.name.text = ""
