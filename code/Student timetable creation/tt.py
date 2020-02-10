@@ -9,17 +9,19 @@ from kivy.properties import ObjectProperty
 
 #module class to store module attributes
 class Module():
-    def __init__(self,name,time,duration,location):
+    def __init__(self,name,day,time,duration,location):
         self.name = name
+        self.day = day
         self.time = time
         self.dur = duration
         self.loc = location
     def show(mod):
-        return mod.name,mod.time,mod.dur,mod.loc
+        return mod.name,mod.day,mod.time,mod.dur,mod.loc
 
 #create kivy grid to place text boxes,buttons etc.
 class ModuleGrid(Widget):
     name = ObjectProperty(None)
+    day = ObjectProperty(None)
     time = ObjectProperty(None)
     dur = ObjectProperty(None)
     loc = ObjectProperty(None)
@@ -27,6 +29,8 @@ class ModuleGrid(Widget):
     def pressed(self):
         m_name = self.name.text
         self.name.text = ""
+        m_day = self.day.text
+        self.day.text = ""
         m_time = self.time.text
         self.time.text = ""
         m_duration = self.dur.text
@@ -38,8 +42,9 @@ class ModuleGrid(Widget):
         ##modules.append(m_duration)
         #modules.append(m_location)
         #print(modules)
-        mod = Module(m_name,m_time,m_duration,m_location)
-        print(mod.show())
+        mod = Module(m_name,m_day,m_time,m_duration,m_location)
+        print(mod.show(), mod.time)
+        
 
 class TimetableApp(App):
     def build(self):

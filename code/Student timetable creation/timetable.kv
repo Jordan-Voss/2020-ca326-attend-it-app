@@ -1,5 +1,6 @@
 <ModuleGrid>
     name: name
+    day: day
     time: time
     dur:dur
     loc:loc
@@ -15,6 +16,13 @@
 
             TextInput:
                 id: name
+                multiline:False
+            Label:
+            Label:
+                text: "Module Day: "
+
+            TextInput:
+                id: day
                 multiline:False
             Label:
             Label:
@@ -43,3 +51,7 @@
             text:"Add Module"
             size_hint:.5,.5
             on_press:root.pressed()
+
+        Button:
+            text:"Create Timetable"
+            size_hint:.5,.5
