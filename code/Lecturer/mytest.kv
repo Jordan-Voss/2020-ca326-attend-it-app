@@ -1,0 +1,59 @@
+WindowManager:
+	MainWindow:
+	Second:
+
+<MainWindow>:
+	name:"login"
+
+	GridLayout:
+		cols:1
+
+		GridLayout:
+			cols:1
+			Label:
+				text: "LECTURE LOGIN"
+			Label:
+				text: "username: "
+			TextInput:
+				multiline : False
+
+			Label:
+				text: "Password"
+
+			TextInput:
+				id: passw
+				multiline : False
+
+		Button:
+			text: "Submit"
+			on_release: 
+				app.root.current = "homepage" if passw.text == "lec" else "login" 
+				root.manager.transition.direction = "left"
+<Second>:
+	name:"homepage"
+
+	GridLayout:
+		cols:1
+
+		GridLayout:
+			cols:1
+			Label:
+				text: "LECTURE HOMEPAGE"
+
+			Button:
+				text: "CLASS"
+			Button:
+				text: "TIMETABLE"
+			Button:
+				text: "ANALYSIS"
+			Label:
+
+			Button:
+				text: "LOGOUT"
+				on_release:
+					app.root.current = "login"
+					root.manager.transition.direction = "right"
+
+	
+
+		
