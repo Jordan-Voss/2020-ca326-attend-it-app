@@ -1,5 +1,11 @@
-<ModuleGrid>
-    name: name
+WindowManager:
+    MainWindow:
+    SecondWindow:
+
+<MainWindow>:
+    name: "main"
+    nam: nam
+    day: day
     time: time
     dur:dur
     loc:loc
@@ -14,7 +20,14 @@
                 text: "Module Name: "
 
             TextInput:
-                id: name
+                id: nam
+                multiline:False
+            Label:
+            Label:
+                text: "Module Day: "
+
+            TextInput:
+                id: day
                 multiline:False
             Label:
             Label:
@@ -43,3 +56,20 @@
             text:"Add Module"
             size_hint:.5,.5
             on_press:root.pressed()
+
+        Button:
+            text:"Next"
+            size_hint:.5,.5
+            on_press:
+                app.root.current = "second"
+                root.manager.transition.direction = "left"
+
+
+<SecondWindow>:
+    name: "second"
+
+    Button:
+        text: "Go Back"
+        on_release:
+            app.root.current = "main"
+            root.manager.transition.direction = "right"
