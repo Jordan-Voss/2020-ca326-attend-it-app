@@ -82,59 +82,25 @@ WindowManager:
             Spinner:
                 id: spinner_1
                 values: root.pickType
-                on_text: root.updateSubSpinner(spinner_1.text)
+                on_text: root.updateSpinner(spinner_1.text)
                 text: "Select Module"
             Spinner:
-                # Assigning id
-                id: spinner_id
-
-                # Callback
-                on_text: root.spinner_clicked(spinner_id.text)
-
-                # initially text on spinner
-                text: "self.modules"
-
-                # total values on spinner
-                #values: root.modules()
-                #values: root.modules
-                # declaring size of the spinner
-                # and the position of it
-            Spinner:
-                # Assigning id
                 id: spinner_2
-
-                # Callback
                 on_text: root.spinner_clicked(spinner_2.text)
-
-                # initially text on spinner
                 text: "Day"
-
-                # total values on spinner
                 values: ["Monday", "Tuesday"]
             Spinner:
-                # Assigning id
                 id: spinner_3
-
-                # Callback
                 on_text: root.spinner_clicked(spinner_3.text)
-
-                # initially text on spinner
                 text: "Time"
-
-                # total values on spinner
                 values: ["6h-7h", "7h-8h"]
-
-                # declaring size of the spinner
-                # and the position of it
-
             Label:
                 text: "Module Location: "
-
             TextInput:
                 id: loc
                 multiline:False
         Button:
             text: "Add Module"
-            on_press: root.mod_but_press(spinner_id.text,spinner_2.text)
+            on_press: root.mod_but_press(spinner_1.text,spinner_2.text,spinner_3.text, loc.text)
         Button:
             text: "Next"
