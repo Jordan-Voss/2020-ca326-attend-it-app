@@ -2,10 +2,11 @@ WindowManager:
     LoginWindow:
     MainWindow:
     SecondWindow:
+    ThirdWindow:
+    StudyTTWindow:
 
 <LoginWindow>:
     name:"login"
-
 	GridLayout:
 		cols:1
 
@@ -16,6 +17,7 @@ WindowManager:
 			Label:
 				text: "Username: "
 			TextInput:
+                id:usr
 				multiline : False
 
 			Label:
@@ -104,3 +106,86 @@ WindowManager:
             on_press: root.mod_but_press(spinner_1.text,spinner_2.text,spinner_3.text, loc.text)
         Button:
             text: "Next"
+            on_press:
+                app.root.current = "third"
+                root.manager.transition.direction = "left"
+<ThirdWindow>:
+    name: "third"
+    hours:hours
+    rnk_spin_1 :rnk_spin_1
+    rnk_spin_2 :rnk_spin_2
+    rnk_spin_3 :rnk_spin_3
+    rnk_spin_4 :rnk_spin_4
+    rnk_spin_5 :rnk_spin_5
+    rnk_spin_6 :rnk_spin_6
+    GridLayout:
+        cols: 1
+        GridLayout:
+            cols:1
+            Label:
+                text:"Rank your modules in order of difficulty, 1 being the easiest."
+            Button:
+                text:"Reset"
+                on_press:
+                    root.reset(rnk_spin_1.text,rnk_spin_2.text,rnk_spin_3.text,rnk_spin_4.text,rnk_spin_5.text,rnk_spin_6.text)
+                    app.root.current = 'third'
+
+            GridLayout:
+                cols:8
+
+                Spinner:
+                    id: rnk_spin_1
+                    values: root.pickType
+                    on_text: root.updateSpinner2(rnk_spin_1.text)
+
+                    text: "6"
+                Spinner:
+                    id: rnk_spin_2
+                    values: root.pickType
+                    on_text: root.updateSpinner2(rnk_spin_2.text)
+                    text: "5"
+                Spinner:
+                    id: rnk_spin_3
+                    values: root.pickType
+                    on_text: root.updateSpinner2(rnk_spin_3.text)
+                    text: "4"
+                Spinner:
+                    id: rnk_spin_4
+                    values: root.pickType
+                    on_text: root.updateSpinner2(rnk_spin_4.text)
+                    text: "3"
+                Spinner:
+                    id: rnk_spin_5
+                    values: root.pickType
+                    on_text: root.updateSpinner2(rnk_spin_5.text)
+                    text: "2"
+                Spinner:
+                    id: rnk_spin_6
+                    values: root.pickType
+                    on_text: root.updateSpinner2(rnk_spin_6.text)
+                    text: "1"
+
+            GridLayout:
+                cols:2
+
+                Label:
+                    text: "Total hours you want to study this week"
+                TextInput:
+                    id:hours
+                    multiline:False
+
+
+
+        Button:
+
+            text:"Rank modules in this order"
+            on_press:
+                root.prs()
+<StudyTTWindow>:
+    name:'study'
+    GridLayout:
+        cols:2
+        Button:
+            text: "Generate my Study Timetable"
+            on_press:
+                root.ranks()
