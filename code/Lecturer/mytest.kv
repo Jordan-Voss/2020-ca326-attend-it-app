@@ -1,9 +1,15 @@
 WindowManager:
 	MainWindow:
 	Second:
+	Third:
+	Fourth:
+	Fifth:
+	Grafico:
 
 <MainWindow>:
 	name:"login"
+	username : usern
+	passw : passw
 
 	GridLayout:
 		cols:1
@@ -11,10 +17,12 @@ WindowManager:
 		GridLayout:
 			cols:1
 			Label:
-				text: "LECTURE LOGIN"
+				text: "LOGIN"
 			Label:
-				text: "username: "
+				text: "username:"
+				
 			TextInput:
+				id: usern
 				multiline : False
 
 			Label:
@@ -26,9 +34,13 @@ WindowManager:
 
 		Button:
 			text: "Submit"
+			on_press: root.btn()
 			on_release: 
-				app.root.current = "homepage" if passw.text == "lec" else "login" 
+				root.verify_credentials()
+				 
+
 				root.manager.transition.direction = "left"
+
 <Second>:
 	name:"homepage"
 
@@ -44,8 +56,14 @@ WindowManager:
 				text: "CLASS"
 			Button:
 				text: "TIMETABLE"
+				on_release:
+					root.manager.current= "grafico"
 			Button:
 				text: "ANALYSIS"
+				on_release:
+					app.root.current = "analysis"
+					root.manager.transition.directin="right"
+
 			Label:
 
 			Button:
@@ -55,5 +73,37 @@ WindowManager:
 					root.manager.transition.direction = "right"
 
 	
+<Third>:
+	name: "Class"
 
-		
+<Fourth>:
+	name:"Timetable"
+
+
+<Fifth>:
+	name: "analysis"
+	
+	GridLayout:
+		cols:1
+
+		GridLayout:
+			cols:1
+			Label:
+				text: "LOGIN"
+			Label:
+				text: "username:"
+				
+			TextInput:
+				id: usern
+				multiline : False
+
+
+		Button:
+			text: "HOMEPAGE"
+			on_release:
+				app.root.current = "homepage"
+				root.manager.transition.direction = "left"
+
+<Grafico>
+	name: "grafico"
+	
