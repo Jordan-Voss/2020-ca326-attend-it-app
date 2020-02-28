@@ -7,9 +7,7 @@ def add_mod_db():
     database="attendit"
     )
     mycursor = mydb.cursor(buffered=True)
-    c = mycursor.excecute("SELECT * FROM student")
-    for r in c:
-        print(c[r])
+    
     query = "SELECT * FROM student"
     quer = "UPDATE student SET day = replace(day, 'NULL', 'Tuesday')"
     #val = (0,mod_name,'Tuesday',hours)

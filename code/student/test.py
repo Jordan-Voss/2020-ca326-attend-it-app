@@ -1,11 +1,25 @@
-import unittest
-from student import is_prime
+from unittest.mock import patch, MagicMock
 
-class PrimesTestCase(unittest.TestCase):
+@patch('mypackage.mymodule.pymysql')
+def test(self, mock_sql):
+    self.assertIs(mypackage.mymodule.pymysql, mock_sql)
 
-    def test_5_prime(self):
-        self.assertTrue(is_prime(5))
+    conn = Mock()
+    mock_sql.connect.return_value = conn
 
+    cursor      = MagicMock()
+    mock_result = MagicMock()
 
-if __name__ == '__main__':
-    unittest.main()
+    cursor.__enter__.return_value = mock_result
+    cursor.__exit___              = MagicMock()
+
+    conn.cursor.return_value = cursor
+
+    connectDB()
+
+    mock_sql.connect.assert_called_with(host='localhost',
+                                        user='root',
+                                        password='Attendit',
+                                        db='attendit')
+
+    mock_result.execute.assert_called_with("sql request", ("id", "modname"))

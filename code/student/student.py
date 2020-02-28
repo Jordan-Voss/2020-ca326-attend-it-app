@@ -5,6 +5,7 @@ from kivy.uix.spinner import Spinner
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty,ListProperty
 from kivy.uix.floatlayout import FloatLayout
+from day_time import day,time
 import mysql.connector
 #------------------------------------------------------------------------------#
 modules =[]
@@ -162,7 +163,7 @@ class ThirdWindow(Screen):
 class StudyTTWindow(Screen):
 #function to add to database making sure things are only
 #added where there is currently nothing scheduled
-    def add_study_db():
+    def add_study_db(mod,day,time,hours):
         mydb = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -171,7 +172,7 @@ class StudyTTWindow(Screen):
         )
         mycursor = mydb.cursor(buffered=True)
         try:
-            mycursor.execute("INSERT INTO student (id,mod_name,day,time)SELECT * FROM (SELECT 0,'a','Wednesday','6h') AS` VALUES`WHERE NOT EXISTS ( SELECT id,day FROM student WHERE mod_name='a' AND day = 'Wednesday' AND time = '6h') LIMIT 1;")
+            mycursor.execute("INSERT INTO student (id,mod_name,day,time)SELECT * FROM (SELECT 0,%s,%s,'6h') AS` VALUES`WHERE NOT EXISTS ( SELECT id,day FROM student WHERE mod_name=%s AND day = %s AND time = '6h') LIMIT 1;",('llll','Tuesday','llll','Tuesday'))
             mydb.commit()
             number_of_rows= mycursor.execute("SELECT * FROM student")
             rows = mycursor.fetchall()
@@ -203,6 +204,7 @@ class StudyTTWindow(Screen):
         am = []
         for i in mod_hours:
             am.append(float(mod_hours[i]))
+
 #add to database
         StudyTTWindow.add_study_db()
 #------------------------------------------------------------------------------#
