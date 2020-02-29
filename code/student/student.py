@@ -5,7 +5,6 @@ from kivy.uix.spinner import Spinner
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty,ListProperty
 from kivy.uix.floatlayout import FloatLayout
-from day_time import day,time
 import mysql.connector
 #------------------------------------------------------------------------------#
 modules =[]
@@ -32,6 +31,7 @@ modules =[]
 #------------------------------------------------------------------------------#
 #New function to add all details to database
 #to make sure all instances of a module are recorded
+#but not when there is a clash of times
 def add_details_db(mod,day,time,location):
     #login details of the database
     mydb = mysql.connector.connect(
@@ -41,8 +41,8 @@ def add_details_db(mod,day,time,location):
     database="attendit"
     )
     mycursor = mydb.cursor()
-    query = "INSERT INTO student(id,mod_name,day,time,location) VALUES (%s,%s,%s,%s,%s);"
-    values = (0, mod,day, time, location)
+    query = "insert into student (id,mod_name,day,time,location) Select 0, %s,%s,%s,%s Where not exists(select * from student where mod_name=%s and day = %s and time = %s and location =%s)"
+    values = (mod,day, time, location,mod,day,time,location)
     try:
         mycursor.execute(query,values)
         mydb.commit()
@@ -152,18 +152,18 @@ class ThirdWindow(Screen):
     def reset(self,rnk_spin_1,rnk_spin_2,rnk_spin_3,rnk_spin_4,rnk_spin_5,rnk_spin_6):
         global m
         m = modules[:]
-        self.rnk_spin_1.text = '1'
-        self.rnk_spin_2.text = '2'
-        self.rnk_spin_3.text = '3'
-        self.rnk_spin_4.text = '4'
-        self.rnk_spin_5.text = '5'
-        self.rnk_spin_6.text = '6'
+        self.rnk_spin_1.text = '6'
+        self.rnk_spin_2.text = '5'
+        self.rnk_spin_3.text = '4'
+        self.rnk_spin_4.text = '3'
+        self.rnk_spin_5.text = '2'
+        self.rnk_spin_6.text = '1'
 #------------------------------------------------------------------------------#
 #Window to generate the study timetable
 class StudyTTWindow(Screen):
 #function to add to database making sure things are only
 #added where there is currently nothing scheduled
-    def add_study_db(mod,day,time,hours):
+    def add_study_db(mod,day,time):
         mydb = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -172,7 +172,7 @@ class StudyTTWindow(Screen):
         )
         mycursor = mydb.cursor(buffered=True)
         try:
-            mycursor.execute("INSERT INTO student (id,mod_name,day,time)SELECT * FROM (SELECT 0,%s,%s,'6h') AS` VALUES`WHERE NOT EXISTS ( SELECT id,day FROM student WHERE mod_name=%s AND day = %s AND time = '6h') LIMIT 1;",('llll','Tuesday','llll','Tuesday'))
+            mycursor.execute("insert into student (id,mod_name,day,time) Select 0, %s,%s,%s Where not exists(select * from student where mod_name=%s and day = %s and time =%s)",(mod,day,time,mod,day,time))
             mydb.commit()
             number_of_rows= mycursor.execute("SELECT * FROM student")
             rows = mycursor.fetchall()
@@ -180,33 +180,56 @@ class StudyTTWindow(Screen):
                 print(row)
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
+
 #if error quit the app
             App.get_running_app().stop()
 #Function for determining the hours to study based on rankings
     def ranks(self):
         global modules
         ranking = {}
-        ranking[r_1] = 6
-        ranking[r_2] = 5
-        ranking[r_3] = 4
-        ranking[r_4] = 3
-        ranking[r_5] = 2
-        ranking[r_6] = 1
+        ranking[r_1] = 1
+        ranking[r_2] = 2
+        ranking[r_3] = 3
+        ranking[r_4] = 4
+        ranking[r_5] = 5
+        ranking[r_6] = 6
         m = 0
+
+
         for item in ranking:
-            m= m + ranking[item]
+            if not item.isdigit():
+                m= m + ranking[item]
+        print('m',m)
         mod_hours = {}
-        rnk = 6
+        rnk = m
+        hours_per_part = s_hours/m
+        print('hpp',hours_per_part)
+        hour_mod ={}
+        z = 0
+
+        while z < len(modules):
+            y = ranking[modules[z]]
+            if modules[z] in ranking and not modules[z].isdigit():
+                print('ri',ranking[modules[z]])
+                hour_mod[modules[z]] = y * hours_per_part
+            z += 1
+        print('hourmod',hour_mod)
+
         for r in modules:
-            if ranking[r] == rnk:
-                mod_hours[r] = rnk/s_hours
+            while rnk > 0:
+                if ranking[r] == rnk:
+                    mod_hours[r] = rnk/s_hours
                 rnk = rnk - 1
-        am = []
-        for i in mod_hours:
-            am.append(float(mod_hours[i]))
+
 
 #add to database
-        StudyTTWindow.add_study_db()
+        for k in hour_mod:
+            j=0
+            print(k,hour_mod[k])
+            while j < hour_mod[k]:
+                print(j,hour_mod[k])
+                StudyTTWindow.add_study_db(k,'Tuesday',j,)
+                j += 1
 #------------------------------------------------------------------------------#
 #Window Manager class
 class WindowManager(ScreenManager):

@@ -1,25 +1,26 @@
-from unittest.mock import patch, MagicMock
+import unittest
+from student import spinner_clicked
 
-@patch('mypackage.mymodule.pymysql')
-def test(self, mock_sql):
-    self.assertIs(mypackage.mymodule.pymysql, mock_sql)
+class TestSpinner(unittest.TestCase):
+    """
+    Our basic test class
+    """
 
-    conn = Mock()
-    mock_sql.connect.return_value = conn
+    def test_spin(self):
+        """
+        The actual test.
+        Any method which starts with ``test_`` will considered as a test case.
+        """
+        res = spinner_clicked(5)
+        self.assertEqual(res, 5)
 
-    cursor      = MagicMock()
-    mock_result = MagicMock()
+    #def test_error(self):
+        """
+        To test exception raise due to run time error
+        """
+        #self.assertRaises(ZeroDivisionError, div, 0)
 
-    cursor.__enter__.return_value = mock_result
-    cursor.__exit___              = MagicMock()
 
-    conn.cursor.return_value = cursor
 
-    connectDB()
-
-    mock_sql.connect.assert_called_with(host='localhost',
-                                        user='root',
-                                        password='Attendit',
-                                        db='attendit')
-
-    mock_result.execute.assert_called_with("sql request", ("id", "modname"))
+if __name__ == '__main__':
+    unittest.main()
