@@ -10,22 +10,55 @@ import mysql.connector
 from mysql.connector import Error
 from kivy.garden.matplotlib import FigureCanvasKivyAgg
 
-
+import numpy as np
 import matplotlib.pyplot as plt 
 
 
-x = [2,4,6,8,10]
-y = [6,7,8,2,4]
 
-x2 = [1,3,5,7,9]
-y2 = [7,8,2,4,2]
-plt.bar(x,y, label='Bars1', color='blue')
-plt.bar(x2,y2, label='Bars2', color='c') 
+grades = []
+attendance= []
 
-plt.xlabel('x')
-plt.ylabel('y')
-plt.title('Interesting Graph\nCheck It out')
-plt.legend()
+def estimate_coef(x, y): 
+    # number of observations/points 
+    n = np.size(x) 
+  
+    # mean of x and y vector 
+    m_x, m_y = np.mean(x), np.mean(y) 
+  
+    # calculating cross-deviation and deviation about x 
+    SS_xy = np.sum(y*x) - n*m_y*m_x 
+    SS_xx = np.sum(x*x) - n*m_x*m_x 
+  
+    # calculating regression coefficients 
+    b_1 = SS_xy / SS_xx 
+    b_0 = m_y - b_1*m_x 
+  
+    return(b_0, b_1) 
+
+def plot_regression_line(x, y, b): 
+    # plotting the actual points as scatter plot 
+    plt.scatter(x, y, color = "m", 
+               marker = "o", s = 30) 
+  
+    # predicted response vector 
+    y_pred = b[0] + b[1]*x 
+  
+    # plotting the regression line 
+    plt.plot(x, y_pred, color = "g") 
+  
+    # putting labels 
+    plt.xlabel('x') 
+    plt.ylabel('y') 
+  
+    # function to show plot 
+    #plt.show() 
+
+
+
+
+
+
+
 
 
 id_= {}
@@ -75,7 +108,7 @@ class Progress(Screen):
 	bar= ObjectProperty(None)
 
 	def on_pre_enter(self, *args):
-		self.bar.add_widget(FigureCanvasKivyAgg(plt.gcf()))
+		#self.bar.add_widget(FigureCanvasKivyAgg(plt.gcf()))
 		self.manager.current = "analysis"
 
 
@@ -112,7 +145,14 @@ class Fifth(Screen):
 	pass
 
 class Grafico(Screen):
+	
+
 	def on_enter(self, *args):
+		x = np.array(grades)
+		y= np.array(attendance)
+		b = estimate_coef(x,y)
+		plot_regression_line(x,y,b)
+
 		box = BoxLayout(orientation='vertical')
 		box.add_widget(FigureCanvasKivyAgg(plt.gcf()))
 		self.add_widget(box)
