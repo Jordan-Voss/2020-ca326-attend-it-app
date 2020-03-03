@@ -54,6 +54,12 @@ WindowManager:
 
 			Button:
 				text: "CLASS"
+				on_release:
+					root.manager.current="Class" 
+
+
+
+
 			Button:
 				text: "TIMETABLE"
 				on_release:
@@ -75,6 +81,9 @@ WindowManager:
 	
 <Third>:
 	name: "Class"
+	Label:
+		text:root.collect()
+
 
 <Fourth>:
 	name:"Timetable"

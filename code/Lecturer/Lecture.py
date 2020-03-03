@@ -5,11 +5,11 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 import mysql.connector
 from mysql.connector import Error
 from kivy.garden.matplotlib import FigureCanvasKivyAgg
-
+import requests
 import numpy as np
 import matplotlib.pyplot as plt 
 
@@ -132,10 +132,25 @@ class MainWindow(Screen):
     pass
 
 class Second(Screen):
+	devices = ObjectProperty(None)
 	
+	def collect(self):
+		
+		r = requests.get('http://192.168.4.1')
+	
+		print(r.text)
+		
 	pass
 
 class Third(Screen):
+	def collect(self):
+		
+		r = requests.get('http://192.168.4.1')
+	
+		return r.text
+
+	
+
 	pass
 
 class Fourth(Screen):
