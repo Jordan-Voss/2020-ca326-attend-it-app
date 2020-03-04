@@ -2,8 +2,10 @@ WindowManager:
     LoginWindow:
     MainWindow:
     SecondWindow:
+    ExtraWindow:
     ThirdWindow:
     StudyTTWindow:
+    Table:
 
 <LoginWindow>:
     name:"login"
@@ -70,9 +72,53 @@ WindowManager:
             size_hint:.5,.5
             on_press:
                 app.root.current = "login"
+                root.manager.transition.direction = "right"
+
+<ExtraWindow>:
+    name: 'extra'
+    actnam:actnam
+    loca:loca
+    GridLayout:
+        cols:1
+        GridLayout:
+            cols:6
+            Label:
+                text: "Activity Name"
+            TextInput:
+                id: actnam
+                multiline:False
+            Spinner:
+                id: spinner_2
+                text: "Day"
+                values: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+            Spinner:
+                id: spinner_3
+                text: "Time"
+                values: ['6h-7h','7h-8h','8h-9h','9h-10h','10h-11h','11h-12h','12h-13h','13h-14h','14h-15h','15h-16h','16h-17h','17h-18h','18h-19h','19h-20h','20h-21h','21h-22h','22h-23h','24h-00h']
+            Label:
+                text: "Location: "
+            TextInput:
+                id: loca
+                multiline:False
+        Button:
+            text:"Add Activity"
+            size_hint:.5,.5
+            on_press:
+                root.add_study_db(actnam.text,spinner_2.text,spinner_3.text,loca.text)
+                app.root.current = "second"
+                root.manager.transition.direction = "right"
+        Button:
+            text:"Back"
+            size_hint:.5,.5
+            # on_press:
+            #     app.root.current = "second"
+            #     root.manager.transition.direction = "right"
+        Button:
+            text:"Next"
+            size_hint:.5,.5
+            on_press:
+                app.root.current = "third"
                 root.manager.transition.direction = "left"
-
-
 <SecondWindow>:
     name: "second"
     loc:loc
@@ -107,7 +153,7 @@ WindowManager:
         Button:
             text: "Next"
             on_press:
-                app.root.current = "third"
+                app.root.current = "extra"
                 root.manager.transition.direction = "left"
 <ThirdWindow>:
     name: "third"
@@ -138,32 +184,32 @@ WindowManager:
                     values: root.pickType
                     on_text: root.updateSpinner2(rnk_spin_1.text)
 
-                    text: "6"
+                    text: "1"
                 Spinner:
                     id: rnk_spin_2
                     values: root.pickType
                     on_text: root.updateSpinner2(rnk_spin_2.text)
-                    text: "5"
+                    text: "2"
                 Spinner:
                     id: rnk_spin_3
                     values: root.pickType
                     on_text: root.updateSpinner2(rnk_spin_3.text)
-                    text: "4"
+                    text: "3"
                 Spinner:
                     id: rnk_spin_4
                     values: root.pickType
                     on_text: root.updateSpinner2(rnk_spin_4.text)
-                    text: "3"
+                    text: "4"
                 Spinner:
                     id: rnk_spin_5
                     values: root.pickType
                     on_text: root.updateSpinner2(rnk_spin_5.text)
-                    text: "2"
+                    text: "5"
                 Spinner:
                     id: rnk_spin_6
                     values: root.pickType
                     on_text: root.updateSpinner2(rnk_spin_6.text)
-                    text: "1"
+                    text: "6"
 
             GridLayout:
                 cols:2
@@ -189,3 +235,21 @@ WindowManager:
             text: "Generate my Study Timetable"
             on_press:
                 root.ranks()
+                app.root.current = 'tt'
+<CLabel>:
+    canvas.before:
+        Color:
+            rgb: self.bgcolor
+        Rectangle:
+            size: self.size
+            pos: self.pos
+<HeaderLabel>:
+    canvas.before:
+        Color:
+            rgb: self.bgcolor
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<Table>:
+    name:'tt'
