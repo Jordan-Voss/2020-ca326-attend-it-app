@@ -2,24 +2,33 @@ WindowManager:
     LoginWindow:
     MainWindow:
     SecondWindow:
+    StudentHome:
     ExtraWindow:
     ThirdWindow:
     StudyTTWindow:
     Table:
-
+    Second:
+    Third:
+    Fourth:
+    Fifth:
+    Grafico:
 <LoginWindow>:
-    name:"login"
+	name:"logi"
+	username : usern
+	passw : passw
+
 	GridLayout:
 		cols:1
 
 		GridLayout:
 			cols:1
 			Label:
-				text: "STUDENT LOGIN"
+				text: "LOGIN"
 			Label:
-				text: "Username: "
+				text: "username:"
+
 			TextInput:
-                id:usr
+				id: usern
 				multiline : False
 
 			Label:
@@ -31,10 +40,164 @@ WindowManager:
 
 		Button:
 			text: "Submit"
-
+			on_press: root.btn()
 			on_release:
-				app.root.current = "main" #if passw.text == "lec" else "login"
+				root.verify_credentials()
+
+
 				root.manager.transition.direction = "left"
+<StudentHome>:
+    name:"stuhomepage"
+
+	GridLayout:
+		cols:1
+
+		GridLayout:
+			cols:1
+			Label:
+				text: "STUDENT HOMEPAGE"
+
+			Button:
+				text: "INPUT MODULES"
+				on_release:
+					root.manager.current="main"
+
+
+
+
+			Button:
+				text: "TIMETABLE"
+				on_release:
+					root.manager.current= "tt"
+			Button:
+				text: "EXTRA ACTIVITIES"
+				on_release:
+					app.root.current = "extra"
+					root.manager.transition.directin="right"
+
+			Button:
+				text: "Rank Modules"
+				on_release:
+					app.root.current = "third"
+					root.manager.transition.directin="right"
+
+			Button:
+				text: "LOGOUT"
+				on_release:
+					app.root.current = "logi"
+					root.manager.transition.direction = "right"
+
+
+
+<Second>:
+	name:"homepage"
+
+	GridLayout:
+		cols:1
+
+		GridLayout:
+			cols:1
+			Label:
+				text: "LECTURE HOMEPAGE"
+
+			Button:
+				text: "CLASS"
+				on_release:
+					root.manager.current="Class"
+
+
+
+
+			Button:
+				text: "ANALYSIS"
+				on_release:
+					root.manager.current= "grafico"
+
+			Label:
+
+			Button:
+				text: "LOGOUT"
+				on_release:
+					app.root.current = "logi"
+					root.manager.transition.direction = "right"
+
+
+<Third>:
+	name: "Class"
+
+    GridLayout:
+        cols:1
+        Button:
+            text:'Collect'
+            on_press:
+                root.collect()
+        Label:
+        Button:
+            text:'Back'
+            on_press:
+                app.root.current = 'homepage'
+
+
+<Fourth>:
+	name:"Timetable"
+
+
+# <Fifth>:
+# 	name: "analysis"
+#
+# 	GridLayout:
+# 		cols:1
+#
+# 		GridLayout:
+# 			cols:1
+# 			Label:
+# 				text: "LOGIN"
+# 			Label:
+# 				text: "username:"
+#
+# 			TextInput:
+# 				id: usern
+# 				multiline : False
+#
+#
+# 		Button:
+# 			text: "HOMEPAGE"
+# 			on_release:
+# 				app.root.current = "homepage"
+# 				root.manager.transition.direction = "left"
+
+<Grafico>
+	name: "grafico"
+
+
+# <LoginWindow>:
+#     name:"login"
+# 	GridLayout:
+# 		cols:1
+#
+# 		GridLayout:
+# 			cols:1
+# 			Label:
+# 				text: "STUDENT LOGIN"
+# 			Label:
+# 				text: "Username: "
+# 			TextInput:
+#                 id:usr
+# 				multiline : False
+#
+# 			Label:
+# 				text: "Password"
+#
+# 			TextInput:
+# 				id: passw
+# 				multiline : False
+#
+# 		Button:
+# 			text: "Submit"
+#
+# 			on_release:
+# 				app.root.current = "main" #if passw.text == "lec" else "login"
+# 				root.manager.transition.direction = "left"
 
 <MainWindow>:
     name: "main"
@@ -100,25 +263,24 @@ WindowManager:
             TextInput:
                 id: loca
                 multiline:False
+        Label:
         Button:
             text:"Add Activity"
             size_hint:.5,.5
             on_press:
-                root.add_study_db(actnam.text,spinner_2.text,spinner_3.text,loca.text)
-                app.root.current = "second"
-                root.manager.transition.direction = "right"
+                root.add_xtra_db( actnam.text,spinner_2.text,spinner_3.text,loca.text)
         Button:
-            text:"Back"
-            size_hint:.5,.5
-            # on_press:
-            #     app.root.current = "second"
-            #     root.manager.transition.direction = "right"
-        Button:
-            text:"Next"
+            text:"Finish"
             size_hint:.5,.5
             on_press:
-                app.root.current = "third"
-                root.manager.transition.direction = "left"
+                app.root.current = "stuhomepage"
+                root.manager.transition.direction = "right"
+        # Button:
+        #     text:"Next"
+        #     size_hint:.5,.5
+        #     on_press:
+        #         app.root.current = "third"
+        #         root.manager.transition.direction = "left"
 <SecondWindow>:
     name: "second"
     loc:loc
@@ -151,9 +313,9 @@ WindowManager:
             text: "Add Module"
             on_press: root.mod_but_press(spinner_1.text,spinner_2.text,spinner_3.text, loc.text)
         Button:
-            text: "Next"
+            text: "Home"
             on_press:
-                app.root.current = "extra"
+                app.root.current = "stuhomepage"
                 root.manager.transition.direction = "left"
 <ThirdWindow>:
     name: "third"
